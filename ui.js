@@ -43,7 +43,8 @@ const elements = {
     gameOverModal: document.getElementById('gameOverModal'),
     gameOverContent: document.getElementById('gameOverContent'),
     gameOverNewGame: document.getElementById('gameOverNewGame'),
-    gameOverRestart: document.getElementById('gameOverRestart')
+    gameOverRestart: document.getElementById('gameOverRestart'),
+    gameOverCloseBtn: document.getElementById('gameOverCloseBtn')
 };
 
 // ==================== Rendering Functions ====================
@@ -398,6 +399,13 @@ function showGameOverModal() {
     elements.gameOverModal.focus();
 }
 
+/**
+ * Close game over modal
+ */
+function closeGameOverModal() {
+    elements.gameOverModal.hidden = true;
+}
+
 // ==================== Modal Functions ====================
 
 /**
@@ -436,6 +444,7 @@ function setupEventListeners() {
     // Game over modal
     elements.gameOverNewGame.addEventListener('click', startNewGame);
     elements.gameOverRestart.addEventListener('click', restartGame);
+    elements.gameOverCloseBtn.addEventListener('click', closeGameOverModal);
 
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
@@ -443,6 +452,8 @@ function setupEventListeners() {
         if (e.key === 'Escape') {
             if (!elements.helpModal.hidden) {
                 closeHelp();
+            } else if (!elements.gameOverModal.hidden) {
+                closeGameOverModal();
             }
         }
 
