@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Scoundrel - A solo dungeon-crawl card game">
+    <title>Scoundrel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Page Title -->
+    <div class="page-header">
+        <div class="title-wrapper">
+            <svg class="logo-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Dragon/Dungeon themed icon -->
+                <g class="dragon">
+                    <!-- Dragon head -->
+                    <path d="M50 20 L60 30 L65 25 L70 35 L60 40 L50 35 L40 40 L30 35 L35 25 L40 30 Z" fill="currentColor"/>
+                    <!-- Dragon body -->
+                    <path d="M50 35 L55 45 L60 55 L55 65 L50 70 L45 65 L40 55 L45 45 Z" fill="currentColor"/>
+                    <!-- Dragon tail -->
+                    <path d="M50 70 L52 80 L50 85 L48 80 Z" fill="currentColor"/>
+                    <!-- Wings -->
+                    <path d="M40 45 L25 40 L30 50 L40 48 Z M60 45 L75 40 L70 50 L60 48 Z" fill="currentColor" opacity="0.7"/>
+                    <!-- Eyes -->
+                    <circle cx="45" cy="28" r="2" fill="#dc2626"/>
+                    <circle cx="55" cy="28" r="2" fill="#dc2626"/>
+                    <!-- Horns -->
+                    <path d="M42 22 L40 15 M58 22 L60 15" stroke="currentColor" stroke-width="2" fill="none"/>
+                </g>
+            </svg>
+            <h1 class="page-title">Scoundrel</h1>
+        </div>
+        <p class="page-subtitle">A Solo Dungeon Card Crawl</p>
+    </div>
+
+    <!-- HUD Section -->
+    <header class="hud" role="banner">
+        <div class="hud-inner">
+            <!-- Health Section -->
+            <div class="hud-section health-section">
+                <h2 class="hud-label">Health</h2>
+                <div class="health-display">
+                    <div class="health-bar-container" role="progressbar" aria-valuemin="0" aria-valuemax="20" aria-valuenow="20">
+                        <div class="health-bar" id="healthBar"></div>
+                    </div>
+                    <span class="health-value" id="healthValue" aria-live="polite">20 / 20</span>
+                </div>
+            </div>
+
+            <!-- Weapon Section -->
+            <div class="hud-section weapon-section">
+                <h2 class="hud-label">Weapon</h2>
+                <div class="weapon-display" id="weaponDisplay">
+                    <span class="weapon-value">—</span>
+                    <span class="weapon-defeated">No weapon</span>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="hud-section stats-section">
+                <div class="stat-item">
+                    <span class="stat-label">Turn</span>
+                    <span class="stat-value" id="turnCounter">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Deck</span>
+                    <span class="stat-value" id="deckCount">44</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Discard</span>
+                    <span class="stat-value" id="discardCount">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Game Area -->
+    <main class="game-container">
+        <!-- Room Grid -->
+        <section class="room-section" aria-label="Current Room">
+            <h2 class="visually-hidden">Room Cards</h2>
+            <div class="room-grid" id="roomGrid">
+                <!-- Cards will be dynamically inserted here -->
+            </div>
+            <div class="room-empty-state" id="roomEmptyState">
+                <p>Start a new game to begin your dungeon crawl</p>
+            </div>
+        </section>
+
+        <!-- Controls -->
+        <section class="controls-section" aria-label="Game Controls">
+            <button id="newGameBtn" class="btn btn-primary" aria-label="Start New Game">
+                New Game
+            </button>
+            <button id="restartBtn" class="btn btn-secondary" aria-label="Restart Current Game" disabled>
+                Restart
+            </button>
+            <button id="avoidBtn" class="btn btn-action" aria-label="Avoid Room" disabled>
+                Avoid Room
+            </button>
+            <button id="helpBtn" class="btn btn-info" aria-label="Show Help">
+                Help
+            </button>
+        </section>
+
+        <!-- Action Log -->
+        <section class="log-section" aria-label="Action Log">
+            <h2 class="log-header">Action Log</h2>
+            <div class="log-container" id="actionLog" role="log" aria-live="polite" aria-atomic="false">
+                <p class="log-entry log-info">Welcome to Scoundrel! Start a new game to begin.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Help Modal -->
+    <div class="modal" id="helpModal" role="dialog" aria-labelledby="helpModalTitle" aria-modal="true" hidden>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="helpModalTitle">How to Play Scoundrel</h2>
+                <button class="modal-close" aria-label="Close Help" id="helpCloseBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <section class="help-section">
+                    <h3>Goal</h3>
+                    <p>Survive the dungeon by clearing all 44 cards. Your score is your remaining health (or negative if you lose).</p>
+                </section>
+
+                <section class="help-section">
+                    <h3>Setup</h3>
+                    <ul>
+                        <li><strong>Health:</strong> Start with 20 HP (max)</li>
+                        <li><strong>Deck:</strong> 44 cards (26 monsters, 9 weapons, 9 potions)</li>
+                        <li><strong>Monsters:</strong> ♣/♠ cards (2-10, J=11, Q=12, K=13, A=14)</li>
+                        <li><strong>Weapons:</strong> ♦ 2-10</li>
+                        <li><strong>Potions:</strong> ♥ 2-10</li>
+                    </ul>
+                </section>
+
+                <section class="help-section">
+                    <h3>Each Turn</h3>
+                    <p>Draw until 4 cards are visible (the "Room"). You must:</p>
+                    <ol>
+                        <li><strong>Avoid the Room:</strong> Place all 4 cards on bottom of deck (cannot avoid twice in a row)</li>
+                        <li><strong>Face the Room:</strong> Choose and resolve 3 cards in any order; the 4th carries to next room</li>
+                    </ol>
+                </section>
+
+                <section class="help-section">
+                    <h3>Card Types</h3>
+                    <dl>
+                        <dt>♦ Weapon</dt>
+                        <dd>Equip immediately. Discards old weapon and its defeated monsters. Resets weapon history.</dd>
+
+                        <dt>♥ Potion</dt>
+                        <dd>Heal by its value (max 20). Only ONE potion per room works; extras are discarded.</dd>
+
+                        <dt>♣/♠ Monster</dt>
+                        <dd>
+                            <strong>Bare-handed:</strong> Take full damage<br>
+                            <strong>With weapon:</strong> Damage = monster − weapon (min 0)<br>
+                            If defeated (damage ≤ 0), stack on weapon.<br>
+                            <strong>Rule:</strong> Weapon can only fight monsters ≤ last defeated value (non-increasing)
+                        </dd>
+                    </dl>
+                </section>
+
+                <section class="help-section">
+                    <h3>Example</h3>
+                    <p><strong>Equipped ♦7, last defeated 9:</strong></p>
+                    <ul>
+                        <li>Fight ♠8: 8−7=1 damage, stack on weapon (last defeated now 8)</li>
+                        <li>Fight ♣6: 6−7=0 damage, stack on weapon (last defeated now 6)</li>
+                        <li>Cannot fight ♠10 (10 > 6) → must fight bare-handed (take 10 damage) or avoid</li>
+                    </ul>
+                </section>
+
+                <section class="help-section">
+                    <h3>Winning & Losing</h3>
+                    <ul>
+                        <li><strong>Win:</strong> Clear the dungeon → Score = remaining health</li>
+                        <li><strong>Lose:</strong> Health ≤ 0 → Score = negative sum of remaining monsters</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div class="modal" id="gameOverModal" role="dialog" aria-labelledby="gameOverTitle" aria-modal="true" hidden>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="gameOverTitle">Game Over</h2>
+            </div>
+            <div class="modal-body">
+                <div class="game-over-content" id="gameOverContent">
+                    <!-- Dynamically filled -->
+                </div>
+                <div class="game-over-actions">
+                    <button id="gameOverNewGame" class="btn btn-primary">New Game</button>
+                    <button id="gameOverRestart" class="btn btn-secondary">Restart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="game.js"></script>
+    <script type="module" src="ui.js"></script>
+</body>
+</html>
