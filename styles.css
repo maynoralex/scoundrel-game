@@ -195,6 +195,19 @@ body {
     max-width: calc(1200px - (var(--spacing-md) * 2));
     width: 100%;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.hud-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent);
+    pointer-events: none;
 }
 
 .hud-section {
@@ -394,7 +407,11 @@ body {
 .weapon-value {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--color-diamonds);
+    background: linear-gradient(135deg, var(--color-diamonds), #fb923c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 2px 4px rgba(251, 146, 60, 0.4));
 }
 
 .weapon-defeated {
@@ -432,10 +449,11 @@ body {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--color-text);
-    background: linear-gradient(135deg, var(--color-primary), var(--color-text));
+    background: linear-gradient(135deg, var(--color-primary), #a78bfa);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    filter: drop-shadow(0 2px 4px rgba(139, 92, 246, 0.3));
 }
 
 @media (max-width: 768px) {
@@ -688,64 +706,104 @@ body {
     justify-content: center;
 }
 
+@media (max-width: 768px) {
+    .controls-section {
+        gap: var(--spacing-sm);
+    }
+}
+
 .btn {
-    padding: var(--spacing-md) var(--spacing-lg);
-    font-size: 1rem;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: 0.875rem;
     font-weight: 600;
     border: none;
     border-radius: var(--radius-md);
     cursor: pointer;
     transition: all var(--transition-fast);
     font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), transparent);
+    pointer-events: none;
 }
 
 .btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    filter: grayscale(0.5);
+}
+
+.btn:active:not(:disabled) {
+    transform: translateY(1px);
 }
 
 .btn-primary {
-    background: var(--color-primary);
+    background: linear-gradient(135deg, var(--color-primary), #7c3aed);
     color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
-    background: var(--color-primary-hover);
+    background: linear-gradient(135deg, var(--color-primary-hover), #6d28d9);
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
 }
 
 .btn-secondary {
-    background: var(--color-secondary);
+    background: linear-gradient(135deg, var(--color-secondary), #3b82f6);
     color: white;
 }
 
 .btn-secondary:hover:not(:disabled) {
-    background: var(--color-secondary-hover);
+    background: linear-gradient(135deg, var(--color-secondary-hover), #2563eb);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
 }
 
 .btn-action {
-    background: var(--color-warning);
-    color: var(--color-bg);
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    color: white;
 }
 
 .btn-action:hover:not(:disabled) {
-    background: #d97706;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
     transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.5);
 }
 
 .btn-action.avoid-disabled {
-    background: var(--color-secondary);
+    background: linear-gradient(135deg, var(--color-secondary), #3b82f6);
 }
 
 .btn-info {
-    background: var(--color-bg-elevated);
+    background: linear-gradient(135deg, var(--color-bg-elevated), #374151);
     color: var(--color-text);
     border: 2px solid var(--color-border);
 }
 
 .btn-info:hover:not(:disabled) {
     border-color: var(--color-primary);
+    background: linear-gradient(135deg, #374151, #4b5563);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+}
+
+@media (max-width: 768px) {
+    .btn {
+        padding: var(--spacing-xs) var(--spacing-md);
+        font-size: 0.75rem;
+    }
 }
 
 /* ==================== Action Log ==================== */

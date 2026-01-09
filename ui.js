@@ -271,10 +271,8 @@ function handleCardClick(index) {
  * Render the action log
  */
 function renderLog() {
-    // Only show last 10 events for performance
-    const recentEvents = game.eventLog.slice(-10);
-
-    elements.actionLog.innerHTML = recentEvents
+    // Show all events (no limit)
+    elements.actionLog.innerHTML = game.eventLog
         .map(event => `<p class="log-entry log-${event.type}">${event.message}</p>`)
         .join('');
 
